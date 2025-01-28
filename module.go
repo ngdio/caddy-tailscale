@@ -43,15 +43,10 @@ func init() {
 	hostinfo.SetApp("caddy")
 }
 
-func getTCPListener(c context.Context, _ string, addr string, _ net.ListenConfig) (any, error) {
+func getTCPListener(c context.Context, network string, host string, port string, _ uint, _ net.ListenConfig) (any, error) {
 	ctx, ok := c.(caddy.Context)
 	if !ok {
 		return nil, fmt.Errorf("context is not a caddy.Context: %T", c)
-	}
-
-	network, host, port, err := caddy.SplitNetworkAddress(addr)
-	if err != nil {
-		return nil, err
 	}
 
 	s, err := getNode(ctx, host)
@@ -65,15 +60,10 @@ func getTCPListener(c context.Context, _ string, addr string, _ net.ListenConfig
 	return s.Listen(network, ":"+port)
 }
 
-func getTLSListener(c context.Context, _ string, addr string, _ net.ListenConfig) (any, error) {
+func getTLSListener(c context.Context, network string, host string, port string, _ uint, _ net.ListenConfig) (any, error) {
 	ctx, ok := c.(caddy.Context)
 	if !ok {
 		return nil, fmt.Errorf("context is not a caddy.Context: %T", c)
-	}
-
-	network, host, port, err := caddy.SplitNetworkAddress(addr)
-	if err != nil {
-		return nil, err
 	}
 
 	s, err := getNode(ctx, host)
@@ -98,15 +88,10 @@ func getTLSListener(c context.Context, _ string, addr string, _ net.ListenConfig
 	return ln, nil
 }
 
-func getUDPListener(c context.Context, _ string, addr string, _ net.ListenConfig) (any, error) {
+func getUDPListener(c context.Context, network string, host string, port string, _ uint, _ net.ListenConfig) (any, error) {
 	ctx, ok := c.(caddy.Context)
 	if !ok {
 		return nil, fmt.Errorf("context is not a caddy.Context: %T", c)
-	}
-
-	network, host, port, err := caddy.SplitNetworkAddress(addr)
-	if err != nil {
-		return nil, err
 	}
 
 	s, err := getNode(ctx, host)
